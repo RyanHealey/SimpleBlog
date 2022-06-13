@@ -1,0 +1,37 @@
+version: '3'
+services:
+  db:
+    image: "postgres"
+    container_name: "Simple_Blog_DB"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=simpleblogdb
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - ./simple-blog-backend/src/main/resources/sql:/docker-entrypoint-initdb.d/
+      - simpleblog:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+  backend:
+    image: "ryanhealey/simple-blog-backend:latest"
+    ports:
+      - "8080:8080"
+    links:
+      - db
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+    simpleblog:
+        external: false
+
+networks:
+  default:
+    driver: bridge

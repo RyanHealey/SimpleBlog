@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    initialization-mode: always
+    url: jdbc:postgresql://localhost:5432/simpleblogdb
+    username: postgres
+  jpa:
+    generate-ddl: false
+    properties:
+      hibernate:
+        ddl-auto: none
+        default_schema: public
+    database: POSTGRESQL

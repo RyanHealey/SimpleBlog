@@ -18,5 +18,5 @@ public abstract class BlogEntity<ID> {
     @Id
     private ID id;
 
-    private Integer active;
+    private Boolean active;
 }

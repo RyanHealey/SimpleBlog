@@ -8,7 +8,6 @@ public enum Permission {
     POSTS(2L,"Posts"),
     COMMENTS(3L,"Comments");
 
-
     private final Long id;
     private final String name;
 }

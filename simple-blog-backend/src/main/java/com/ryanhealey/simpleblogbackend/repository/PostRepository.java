@@ -6,6 +6,6 @@ import org.springframework.data.repository.Repository;
 
 import java.util.UUID;
 
-public interface PostRepository extends Repository<PostEntity, UUID> {
+public interface PostRepository extends BlogRepository<PostEntity> {
 
 }

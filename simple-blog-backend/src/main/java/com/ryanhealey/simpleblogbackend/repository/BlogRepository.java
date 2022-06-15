@@ -12,9 +12,11 @@ import java.util.UUID;
 public interface BlogRepository<E extends BlogEntity> extends Repository<E, UUID> {
     List<E> findAll();
 
-    List<E> findAllByActive(final Integer active);
+    List<E> findAllByActive(final Boolean active);
 
     Optional<E> findById(final UUID id);
 
     Optional<E> findByIdAndActive(final UUID id, final Boolean active);
+
+    E save(final E entity);
 }

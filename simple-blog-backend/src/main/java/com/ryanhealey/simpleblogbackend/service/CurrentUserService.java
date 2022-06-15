@@ -1,6 +1,5 @@
 package com.ryanhealey.simpleblogbackend.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ryanhealey.simpleblogbackend.domain.CurrentUserEntity;
 import com.ryanhealey.simpleblogbackend.dto.CurrentUserDto;
 import com.ryanhealey.simpleblogbackend.mappers.CurrentUserMapper;
@@ -8,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-
-import static java.util.Objects.isNull;
 
 @Service
 public class CurrentUserService {
@@ -22,8 +19,7 @@ public class CurrentUserService {
     public CurrentUserService(CurrentUserMapper mapper, UserService userService) {
         this.mapper = mapper;
         this.userService = userService;
-        this.currentUser = new CurrentUserEntity();
-        this.currentUser.setUser(this.userService.getDefaultUser());
+        this.currentUser = CurrentUserEntity.builder().user(this.userService.getDefaultUser()).build();
     }
 
     public CurrentUserEntity getCurrentUser(){
@@ -35,7 +31,7 @@ public class CurrentUserService {
     }
 
     public CurrentUserDto updateCurrentUserDto(UUID id) {
-        currentUser.setUser(userService.getUserById(id).get());
+        currentUser.setUser(userService.getUserEntityById(id).get());
         return mapper.entityToDto(currentUser);
     }
 }

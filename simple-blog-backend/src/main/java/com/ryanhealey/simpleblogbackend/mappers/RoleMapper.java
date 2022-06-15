@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.toMap;
 
 @AllArgsConstructor
 @Service
-public class RoleMapper {
+public class RoleMapper implements BlogMapper<RoleEntity, RoleDto>{
     private final RolePermissionService rolePermissionService;
 
     public RoleDto entityToDto(RoleEntity entity){
@@ -27,5 +27,12 @@ public class RoleMapper {
     private Map<Long, Long> buildPermissions(final RoleEntity entity) {
         return rolePermissionService.getRolePermissionsForRole(entity).stream()
                 .collect(toMap(RolePermissionEntity::getPermission, RolePermissionEntity::getPermissionLevel));
+    }
+
+    public RoleEntity dtoToEntity(RoleDto dto) {
+        return RoleEntity.builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .build();
     }
 }

@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS "user"(
 
 CREATE TABLE IF NOT EXISTS post(
     id UUID PRIMARY KEY,
-    content VARCHAR(15) NOT NULL,
+    content VARCHAR(65535) NOT NULL,
     user_id UUID NOT NULL,
     active BOOLEAN NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES "user"(id)
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS post(
 
 CREATE TABLE IF NOT EXISTS comment(
     id UUID PRIMARY KEY,
-    content VARCHAR(15) NOT NULL,
+    content VARCHAR(65535) NOT NULL,
     user_id UUID NOT NULL,
     post_id UUID NOT NULL,
     active BOOLEAN NOT NULL,
@@ -64,3 +64,9 @@ VALUES
 ('090abb4d-b815-4501-a6c5-10917c1ac7be','ff796aa3-169d-4f87-8ba9-ba22bbfbd83b',1,1,true),
 ('4ef9fa6a-12d7-42bf-bdbf-663e6b827e2f','ff796aa3-169d-4f87-8ba9-ba22bbfbd83b',2,2,true),
 ('584e745d-0d7a-41c1-9163-d87629c89043','ff796aa3-169d-4f87-8ba9-ba22bbfbd83b',3,2,true);
+
+INSERT INTO post(id,content, user_id, active)
+VALUES ('8504de9a-6ebc-4502-a368-6a7383de7588','This is the first blog post!','62128dcb-ab76-4949-9166-2184a9e0e4f7',true);
+
+INSERT INTO comment (id,content, user_id, post_id, active)
+VALUES ('030119af-acc4-45c0-9509-6c219ba39b9b','Yay!','c490ea48-65ae-4932-8468-d2682935da21','8504de9a-6ebc-4502-a368-6a7383de7588',true);

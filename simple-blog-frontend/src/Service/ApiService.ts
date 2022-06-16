@@ -17,8 +17,8 @@ export abstract class ApiService<T>{
         .then(res => res.json());
     }
 
-    postNew = (body : T) : void => {
-        this.sendRequest('/'+this.endpoint,'POST',JSON.stringify(body));
+    postNew = (body : T) : Promise<Response> => {
+        return this.sendRequest('/'+this.endpoint,'POST',JSON.stringify(body));
     }
 
     delete = (id : string): void => {

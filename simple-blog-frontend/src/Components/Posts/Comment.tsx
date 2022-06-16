@@ -1,29 +1,40 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useContext, useState } from "react";
+import { UserContext } from "../../App";
 import { CommentEntity } from "../../Domain/CommentEntity";
+import { CurrentUserEntity } from "../../Domain/CurrentUserEntity";
+import { UserContextType } from "../../Domain/UserContextType";
 import { CommentApiService } from "../../Service/CommentApiService";
+import { hasPermissionToDeleteComment } from "../../Service/PermissionsService";
 import BlogButton from "./Button";
-import { StyledButton } from "./Button.styles";
 import { CommentContainer } from "./Comment.styles";
 
 const api: CommentApiService = new CommentApiService();
 
+
+
 function Comment (commentEntity:CommentEntity) : ReactElement {
+    const currentUser:UserContextType = useContext(UserContext);
+    const [showComponent, setShowComponent] = useState(true)
+    
+
     const onDelete = () : void => {
-        api.delete(commentEntity.id);
+        api.delete(commentEntity.id ?? "0");
         setShowComponent(false)
     }
-    
-    const [showComponent, setShowComponent] = useState(true)
+
+    function canDelete(currentUser: CurrentUserEntity): boolean {
+        return hasPermissionToDeleteComment(commentEntity, currentUser);
+    }
 
     return (
         <React.Fragment>
-        {showComponent ?
-        <CommentContainer>
-            <p>{commentEntity.content}</p>
-            <p>By {commentEntity.user?.name}</p>
-            <BlogButton onClick={onDelete} content='Delete'/>
-        </CommentContainer>
-        : null}
+            {showComponent ?
+            <CommentContainer>
+                <p>{commentEntity.content}</p>
+                <p>By {commentEntity.user?.name}</p>
+                {canDelete(currentUser.currentUser) ? <BlogButton onClick={onDelete} content='Delete' />: null}
+            </CommentContainer>
+            : null}
         </React.Fragment>
     )
 }   

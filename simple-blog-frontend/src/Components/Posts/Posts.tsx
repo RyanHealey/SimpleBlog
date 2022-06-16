@@ -1,19 +1,23 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import { PostEntity } from '../Domain/PostEntity';
+import { PostEntity } from '../../Domain/PostEntity';
+import { PostApiService } from '../../Service/PostApiService';
+import Post from './Post';
 
+
+const api: PostApiService = new PostApiService();
 
 function Posts () : ReactElement {
-    const [postList, setPostList] = useState<Array<PostEntity>>([]);
+    const [postList, setPostList] = useState<Array<ReactElement>>([]);
 
-    const getPosts = () : void => {
-        fetch("/posts",{headers:{'content-type': 'application/json'}})
-        .then(res => res.json())
-        .then(res => {setPostList(res)});
+    const formatPosts  = (posts : Array<PostEntity>) : void => {
+        setPostList(posts.map((post) => <Post id={post.id} content={post.content} user={post.user}/> ));
     }
 
-    useEffect(getPosts,[]);
+    useEffect(() => {
+        api.getAll().then(res => {formatPosts(res)});    
+    },[]);
     return(
-        <div>{JSON.stringify(postList)}</div>
+        <div>{postList}</div>
     )
 }
 

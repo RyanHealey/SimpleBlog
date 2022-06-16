@@ -45,11 +45,11 @@ public abstract class BlogService<E extends BlogEntity, D extends BlogDto, m ext
 
     }
 
-    protected BlogRepository<E> getRepository(){
-        return this.repository;
+    protected r getRepository(){
+        return (r) this.repository;
     }
 
-    protected BlogMapper<E,D> getMapper(){
-        return this.mapper;
+    protected m getMapper(){
+        return  (m) this.mapper;
     }
 }

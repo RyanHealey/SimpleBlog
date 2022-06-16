@@ -51,4 +51,8 @@ public abstract class BlogController<D extends BlogDto, S extends BlogService> {
         }
     }
 
+    protected S getService(){
+        return this.service;
+    }
+
 }
